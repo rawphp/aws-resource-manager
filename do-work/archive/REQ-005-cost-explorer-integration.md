@@ -1,7 +1,7 @@
 # REQ-005: Cost Explorer Integration
 
 **UR:** UR-001
-**Status:** backlog
+**Status:** done
 **Created:** 2026-03-14
 
 ## Task
