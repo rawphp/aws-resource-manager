@@ -13,7 +13,11 @@ export function App() {
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
   const {
     report,
+    loading,
     loadReport,
+    availableReports,
+    currentReportName,
+    selectReport,
     filters,
     setFilters,
     sort,
@@ -42,6 +46,22 @@ export function App() {
     });
   };
 
+  if (loading) {
+    return (
+      <div style={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        minHeight: '60vh',
+        fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
+        color: '#666',
+        fontSize: '1.1rem',
+      }}>
+        Loading report...
+      </div>
+    );
+  }
+
   if (!report) {
     return <FileUpload onFileLoad={loadReport} />;
   }
@@ -52,7 +72,30 @@ export function App() {
         <h1 style={{ fontSize: '1.5rem', color: '#1a1a2e', margin: 0 }}>
           AWS Resource Manager
         </h1>
-        <div style={{ display: 'flex', gap: '8px' }}>
+        <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+          {/* Report selector dropdown */}
+          {availableReports.length > 0 && (
+            <select
+              value={currentReportName}
+              onChange={(e) => {
+                setSelectedIds(new Set());
+                selectReport(e.target.value);
+              }}
+              style={{
+                padding: '8px 12px',
+                borderRadius: '6px',
+                border: '1px solid #ddd',
+                fontSize: '0.85rem',
+                background: 'white',
+                maxWidth: '300px',
+              }}
+            >
+              {availableReports.map((name) => (
+                <option key={name} value={name}>{formatReportName(name)}</option>
+              ))}
+            </select>
+          )}
+
           {(['resources', 'costs'] as View[]).map((v) => (
             <button
               key={v}
@@ -71,19 +114,6 @@ export function App() {
               {v === 'resources' ? 'Resources' : 'Costs'}
             </button>
           ))}
-          <button
-            onClick={() => window.location.reload()}
-            style={{
-              padding: '8px 16px',
-              background: '#f0f0f0',
-              border: 'none',
-              borderRadius: '6px',
-              cursor: 'pointer',
-              fontSize: '0.85rem',
-            }}
-          >
-            Load New Report
-          </button>
         </div>
       </div>
 
@@ -113,4 +143,13 @@ export function App() {
       />
     </div>
   );
+}
+
+/** Turns "report-2026-03-14T08-30-00.json" into "2026-03-14 08:30:00" */
+function formatReportName(filename: string): string {
+  const match = filename.match(/report-(\d{4}-\d{2}-\d{2})T(\d{2})-(\d{2})-(\d{2})/);
+  if (match) {
+    return `${match[1]} ${match[2]}:${match[3]}:${match[4]}`;
+  }
+  return filename.replace('.json', '');
 }

@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect, useCallback } from 'react';
 import type { ScanReport, DiscoveredResource } from '@aws-resource-manager/shared';
 
 export interface Filters {
@@ -16,6 +16,9 @@ export interface SortConfig {
 
 export function useReport() {
   const [report, setReport] = useState<ScanReport | null>(null);
+  const [availableReports, setAvailableReports] = useState<string[]>([]);
+  const [currentReportName, setCurrentReportName] = useState<string>('');
+  const [loading, setLoading] = useState(true);
   const [filters, setFilters] = useState<Filters>({
     search: '',
     service: '',
@@ -28,11 +31,44 @@ export function useReport() {
     direction: 'asc',
   });
 
+  // Fetch available reports on mount
+  useEffect(() => {
+    fetch('/api/reports')
+      .then((res) => res.json())
+      .then((files: string[]) => {
+        setAvailableReports(files);
+        // Auto-load the latest (first in the list, sorted newest-first)
+        if (files.length > 0) {
+          selectReport(files[0]);
+        } else {
+          setLoading(false);
+        }
+      })
+      .catch(() => {
+        setLoading(false);
+      });
+  }, []);
+
+  const selectReport = useCallback((filename: string) => {
+    setLoading(true);
+    fetch(`/api/reports/${filename}`)
+      .then((res) => res.json())
+      .then((data: ScanReport) => {
+        setReport(data);
+        setCurrentReportName(filename);
+        setLoading(false);
+      })
+      .catch(() => {
+        setLoading(false);
+      });
+  }, []);
+
   const loadReport = (file: File) => {
     const reader = new FileReader();
     reader.onload = (e) => {
       const data = JSON.parse(e.target?.result as string) as ScanReport;
       setReport(data);
+      setCurrentReportName(file.name);
     };
     reader.readAsText(file);
   };
@@ -115,7 +151,11 @@ export function useReport() {
 
   return {
     report,
+    loading,
     loadReport,
+    availableReports,
+    currentReportName,
+    selectReport,
     filters,
     setFilters,
     sort,
