@@ -1,7 +1,7 @@
 # REQ-010: Resource Selection and Cleanup
 
 **UR:** UR-001
-**Status:** backlog
+**Status:** done
 **Created:** 2026-03-14
 
 ## Task
