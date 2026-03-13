@@ -2,6 +2,11 @@
 
 import { readFileSync } from 'node:fs';
 import { resolve, join } from 'node:path';
+
+// npm workspace scripts change cwd to the package directory.
+// INIT_CWD preserves the original directory where the user ran the command.
+const userCwd = process.env['INIT_CWD'] || process.cwd();
+const resolvePath = (p: string) => resolve(userCwd, p);
 import { parseConfigFile } from './credentials.js';
 import { resolveCredentials } from './credentials.js';
 import { scanAccount } from './engine.js';
@@ -99,7 +104,7 @@ Report Options:
 
 async function runScan(args: CliArgs): Promise<void> {
   console.log('Loading config from', args.configPath);
-  const config = parseConfigFile(resolve(args.configPath));
+  const config = parseConfigFile(resolvePath(args.configPath));
 
   const accountsToScan = args.account
     ? config.accounts.filter((a) => a.name === args.account)
@@ -169,7 +174,7 @@ async function runScan(args: CliArgs): Promise<void> {
   // Generate and save report
   const report = generateReport(accountResults, allCostsByService, allCostsByRegion);
   const timestamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19);
-  const outputPath = join(resolve(args.outputDir), `report-${timestamp}.json`);
+  const outputPath = join(resolvePath(args.outputDir), `report-${timestamp}.json`);
   saveReport(report, outputPath);
 
   console.log(formatSummaryTable(report.summary));
@@ -182,7 +187,7 @@ function showReport(args: CliArgs): void {
     process.exit(1);
   }
 
-  const raw = readFileSync(resolve(args.inputPath), 'utf-8');
+  const raw = readFileSync(resolvePath(args.inputPath), 'utf-8');
   const report: ScanReport = JSON.parse(raw);
   console.log(formatSummaryTable(report.summary));
 }
