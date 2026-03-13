@@ -51,7 +51,11 @@ accounts:
 ### 3. Run a Scan
 
 ```bash
-npx ts-node packages/scanner/src/cli.ts scan --config accounts.yaml
+# Using compiled output (after npm run build):
+npm run start --workspace=packages/scanner -- scan --config accounts.yaml
+
+# Or for development (no build step needed):
+npm run dev --workspace=packages/scanner -- scan --config accounts.yaml
 ```
 
 This will:
