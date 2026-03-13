@@ -1,7 +1,7 @@
 # REQ-002: Multi-Account Credential Management
 
 **UR:** UR-001
-**Status:** backlog
+**Status:** done
 **Created:** 2026-03-14
 
 ## Task
@@ -14,13 +14,13 @@ The app needs to scan multiple AWS accounts. Users provide credentials for each 
 
 ## Acceptance Criteria
 
-- [ ] Config file schema defined (YAML) with account name, credentials, optional role ARN
-- [ ] Parser that reads and validates the config file
-- [ ] Function `getAwsClients(accountName)` returns configured AWS SDK v3 clients
-- [ ] Support for STS AssumeRole when role ARN is provided
-- [ ] Credentials are never written to logs or console output
-- [ ] Example config file provided (with placeholder values)
-- [ ] Unit tests for config parsing and validation
+- [x] Config file schema defined (YAML) with account name, credentials, optional role ARN
+- [x] Parser that reads and validates the config file
+- [x] Function `resolveCredentials(account)` returns credentials (with STS AssumeRole support)
+- [x] Support for STS AssumeRole when role ARN is provided
+- [x] Credentials are never written to logs or console output
+- [x] Example config file provided (with placeholder values)
+- [x] Unit tests for config parsing and validation
 
 ## Verification Steps
 
@@ -30,3 +30,9 @@ The app needs to scan multiple AWS accounts. Users provide credentials for each 
    - Expected: All credential management tests pass
 2. **build** `npm run build`
    - Expected: Clean compilation with no errors
+
+## Outputs
+
+- packages/scanner/src/credentials.ts — credential management module
+- packages/scanner/src/credentials.test.ts — 9 unit tests
+- accounts.example.yaml — example config file

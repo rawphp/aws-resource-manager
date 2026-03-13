@@ -1,0 +1,18 @@
+# AWS Resource Manager - Account Configuration
+# Copy this file to accounts.yaml and fill in your credentials.
+# NEVER commit accounts.yaml to version control.
+
+accounts:
+  - name: production
+    accessKeyId: AKIAIOSFODNN7EXAMPLE
+    secretAccessKey: wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
+    # Optional: default region for this account
+    # defaultRegion: us-east-1
+
+  - name: staging
+    accessKeyId: AKIAIOSFODNN8EXAMPLE
+    secretAccessKey: wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
+    # Optional: assume a role instead of using direct credentials
+    # roleArn: arn:aws:iam::123456789012:role/ReadOnlyAccess
+    # Optional: session token for temporary credentials
+    # sessionToken: FwoGZXIvYXdzEBY...
