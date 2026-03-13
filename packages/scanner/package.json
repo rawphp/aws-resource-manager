@@ -1,0 +1,17 @@
+{
+  "name": "@aws-resource-manager/scanner",
+  "version": "1.0.0",
+  "private": true,
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@aws-resource-manager/shared": "*"
+  },
+  "devDependencies": {
+    "vitest": "^3.0.0"
+  }
+}
