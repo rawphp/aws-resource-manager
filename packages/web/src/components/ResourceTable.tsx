@@ -1,5 +1,6 @@
 import type { DiscoveredResource } from '@aws-resource-manager/shared';
 import type { Filters, SortConfig } from '../hooks/useReport';
+import { getAwsConsoleUrl } from '../utils/awsConsoleUrl';
 
 interface ResourceTableProps {
   resources: (DiscoveredResource & { account: string })[];
@@ -143,7 +144,26 @@ export function ResourceTable({
                   </td>
                 )}
                 <td style={tdStyle}>
-                  <div style={{ fontWeight: 500 }}>{r.name || r.id}</div>
+                  {(() => {
+                    const consoleUrl = getAwsConsoleUrl(r);
+                    const displayName = r.name || r.id;
+                    return consoleUrl ? (
+                      <div style={{ fontWeight: 500 }}>
+                        <a
+                          href={consoleUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          style={{ color: '#0073bb', textDecoration: 'none' }}
+                          onMouseEnter={(e) => { (e.target as HTMLElement).style.textDecoration = 'underline'; }}
+                          onMouseLeave={(e) => { (e.target as HTMLElement).style.textDecoration = 'none'; }}
+                        >
+                          {displayName}
+                        </a>
+                      </div>
+                    ) : (
+                      <div style={{ fontWeight: 500 }}>{displayName}</div>
+                    );
+                  })()}
                   <div style={{ fontSize: '0.75rem', color: '#999' }}>{r.id}</div>
                 </td>
                 <td style={tdStyle}>
