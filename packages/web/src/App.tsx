@@ -4,10 +4,12 @@ import { SummaryCards } from './components/SummaryCards';
 import { ResourceTable } from './components/ResourceTable';
 import { CostBreakdown } from './components/CostBreakdown';
 import { CleanupPanel } from './components/CleanupPanel';
+import { AccountsManager } from './components/AccountsManager';
 import { useReport } from './hooks/useReport';
 import { useScan } from './hooks/useScan';
+import { useAccounts } from './hooks/useAccounts';
 
-type View = 'resources' | 'costs';
+type View = 'resources' | 'costs' | 'accounts';
 
 export function App() {
   const [view, setView] = useState<View>('resources');
@@ -32,6 +34,14 @@ export function App() {
   } = useReport();
 
   const { scanning, error: scanError, startScan } = useScan(refreshReports);
+  const {
+    accounts: accountsList,
+    loading: accountsLoading,
+    error: accountsError,
+    addAccount,
+    updateAccount,
+    deleteAccount,
+  } = useAccounts();
 
   const selectedResources = useMemo(
     () => allResources.filter((r) => selectedIds.has(r.id)),
@@ -122,7 +132,7 @@ export function App() {
             </select>
           )}
 
-          {(['resources', 'costs'] as View[]).map((v) => (
+          {(['resources', 'costs', 'accounts'] as View[]).map((v) => (
             <button
               key={v}
               onClick={() => setView(v)}
@@ -137,15 +147,15 @@ export function App() {
                 fontWeight: view === v ? 600 : 400,
               }}
             >
-              {v === 'resources' ? 'Resources' : 'Costs'}
+              {v.charAt(0).toUpperCase() + v.slice(1)}
             </button>
           ))}
         </div>
       </div>
 
-      <SummaryCards summary={report.summary} />
+      {view !== 'accounts' && <SummaryCards summary={report.summary} />}
 
-      {view === 'resources' ? (
+      {view === 'resources' && (
         <ResourceTable
           resources={filteredResources}
           filters={filters}
@@ -159,8 +169,19 @@ export function App() {
           selectedIds={selectedIds}
           onToggleSelect={toggleSelect}
         />
-      ) : (
+      )}
+      {view === 'costs' && (
         <CostBreakdown summary={report.summary} allResources={allResources} />
+      )}
+      {view === 'accounts' && (
+        <AccountsManager
+          accounts={accountsList}
+          loading={accountsLoading}
+          error={accountsError}
+          onAdd={addAccount}
+          onUpdate={updateAccount}
+          onDelete={deleteAccount}
+        />
       )}
 
       <CleanupPanel
