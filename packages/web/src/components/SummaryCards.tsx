@@ -5,7 +5,7 @@ interface SummaryCardsProps {
 }
 
 const cardStyle: React.CSSProperties = {
-  background: 'white',
+  background: 'var(--bg-primary)',
   borderRadius: '12px',
   padding: '20px 24px',
   boxShadow: '0 1px 3px rgba(0,0,0,0.1)',
@@ -14,14 +14,14 @@ const cardStyle: React.CSSProperties = {
 
 const labelStyle: React.CSSProperties = {
   fontSize: '0.85rem',
-  color: '#666',
+  color: 'var(--text-muted)',
   marginBottom: '4px',
 };
 
 const valueStyle: React.CSSProperties = {
   fontSize: '1.8rem',
   fontWeight: 700,
-  color: '#1a1a2e',
+  color: 'var(--text-primary)',
 };
 
 export function SummaryCards({ summary }: SummaryCardsProps) {
@@ -35,7 +35,7 @@ export function SummaryCards({ summary }: SummaryCardsProps) {
       </div>
       <div style={cardStyle}>
         <div style={labelStyle}>Est. Monthly Cost</div>
-        <div style={{ ...valueStyle, color: '#e63946' }}>
+        <div style={{ ...valueStyle, color: 'var(--danger-strong)' }}>
           ${summary.totalEstimatedMonthlyCost.toFixed(2)}
         </div>
       </div>

@@ -74,20 +74,20 @@ export function AccountsManager({ accounts, loading, error, onAdd, onUpdate, onD
   };
 
   if (loading) {
-    return <div style={{ padding: '20px', color: '#666' }}>Loading accounts...</div>;
+    return <div style={{ padding: '20px', color: 'var(--text-muted)' }}>Loading accounts...</div>;
   }
 
   return (
     <div>
-      {error && <div style={{ color: '#dc3545', marginBottom: '16px' }}>{error}</div>}
+      {error && <div style={{ color: 'var(--danger)', marginBottom: '16px' }}>{error}</div>}
 
       <div style={{ marginBottom: '16px' }}>
         <button
           onClick={openAddForm}
           style={{
             padding: '8px 16px',
-            background: '#28a745',
-            color: 'white',
+            background: 'var(--success)',
+            color: 'var(--text-on-accent)',
             border: 'none',
             borderRadius: '6px',
             cursor: 'pointer',
@@ -103,8 +103,8 @@ export function AccountsManager({ accounts, loading, error, onAdd, onUpdate, onD
         <div style={{
           padding: '40px',
           textAlign: 'center',
-          color: '#999',
-          border: '2px dashed #ddd',
+          color: 'var(--text-faint)',
+          border: '2px dashed var(--border)',
           borderRadius: '8px',
         }}>
           <p style={{ fontSize: '1.1rem', margin: '0 0 8px' }}>No accounts configured</p>
@@ -115,7 +115,7 @@ export function AccountsManager({ accounts, loading, error, onAdd, onUpdate, onD
       {accounts.length > 0 && (
         <table style={{ width: '100%', borderCollapse: 'collapse' }}>
           <thead>
-            <tr style={{ borderBottom: '2px solid #eee' }}>
+            <tr style={{ borderBottom: '2px solid var(--border-light)' }}>
               <th style={thStyle}>Name</th>
               <th style={thStyle}>Access Key ID</th>
               <th style={thStyle}>Region</th>
@@ -125,7 +125,7 @@ export function AccountsManager({ accounts, loading, error, onAdd, onUpdate, onD
           </thead>
           <tbody>
             {accounts.map((account) => (
-              <tr key={account.name} style={{ borderBottom: '1px solid #eee' }}>
+              <tr key={account.name} style={{ borderBottom: '1px solid var(--border-light)' }}>
                 <td style={tdStyle}>{account.name}</td>
                 <td style={tdStyle}><code style={{ fontSize: '0.8rem' }}>{account.accessKeyId}</code></td>
                 <td style={tdStyle}>{account.defaultRegion || '—'}</td>
@@ -134,11 +134,11 @@ export function AccountsManager({ accounts, loading, error, onAdd, onUpdate, onD
                   <button onClick={() => openEditForm(account)} style={actionBtnStyle}>Edit</button>
                   {confirmDelete === account.name ? (
                     <>
-                      <button onClick={() => handleDelete(account.name)} style={{ ...actionBtnStyle, color: '#dc3545', fontWeight: 600 }}>Confirm</button>
+                      <button onClick={() => handleDelete(account.name)} style={{ ...actionBtnStyle, color: 'var(--danger)', fontWeight: 600 }}>Confirm</button>
                       <button onClick={() => setConfirmDelete(null)} style={actionBtnStyle}>Cancel</button>
                     </>
                   ) : (
-                    <button onClick={() => setConfirmDelete(account.name)} style={{ ...actionBtnStyle, color: '#dc3545' }}>Delete</button>
+                    <button onClick={() => setConfirmDelete(account.name)} style={{ ...actionBtnStyle, color: 'var(--danger)' }}>Delete</button>
                   )}
                 </td>
               </tr>
@@ -151,15 +151,15 @@ export function AccountsManager({ accounts, loading, error, onAdd, onUpdate, onD
         <div style={{
           marginTop: '16px',
           padding: '20px',
-          background: '#f8f9fa',
+          background: 'var(--bg-secondary)',
           borderRadius: '8px',
-          border: '1px solid #ddd',
+          border: '1px solid var(--border)',
         }}>
           <h3 style={{ margin: '0 0 16px', fontSize: '1rem' }}>
             {editingName ? `Edit: ${editingName}` : 'Add Account'}
           </h3>
 
-          {formError && <div style={{ color: '#dc3545', marginBottom: '12px', fontSize: '0.85rem' }}>{formError}</div>}
+          {formError && <div style={{ color: 'var(--danger)', marginBottom: '12px', fontSize: '0.85rem' }}>{formError}</div>}
 
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
             <div>
@@ -223,8 +223,8 @@ export function AccountsManager({ accounts, loading, error, onAdd, onUpdate, onD
           <div style={{ marginTop: '16px', display: 'flex', gap: '8px' }}>
             <button onClick={handleSubmit} style={{
               padding: '8px 20px',
-              background: '#4361ee',
-              color: 'white',
+              background: 'var(--accent)',
+              color: 'var(--text-on-accent)',
               border: 'none',
               borderRadius: '6px',
               cursor: 'pointer',
@@ -234,8 +234,8 @@ export function AccountsManager({ accounts, loading, error, onAdd, onUpdate, onD
             </button>
             <button onClick={closeForm} style={{
               padding: '8px 20px',
-              background: '#f0f0f0',
-              color: '#333',
+              background: 'var(--bg-secondary)',
+              color: 'var(--text-secondary)',
               border: 'none',
               borderRadius: '6px',
               cursor: 'pointer',
@@ -253,7 +253,7 @@ const thStyle: React.CSSProperties = {
   textAlign: 'left',
   padding: '10px 12px',
   fontSize: '0.8rem',
-  color: '#666',
+  color: 'var(--text-muted)',
   fontWeight: 600,
   textTransform: 'uppercase',
   letterSpacing: '0.5px',
@@ -267,7 +267,7 @@ const tdStyle: React.CSSProperties = {
 const actionBtnStyle: React.CSSProperties = {
   padding: '4px 8px',
   background: 'none',
-  border: '1px solid #ddd',
+  border: '1px solid var(--border)',
   borderRadius: '4px',
   cursor: 'pointer',
   fontSize: '0.8rem',
@@ -278,14 +278,14 @@ const labelStyle: React.CSSProperties = {
   display: 'block',
   fontSize: '0.8rem',
   fontWeight: 600,
-  color: '#555',
+  color: 'var(--text-muted)',
   marginBottom: '4px',
 };
 
 const inputStyle: React.CSSProperties = {
   width: '100%',
   padding: '8px 10px',
-  border: '1px solid #ddd',
+  border: '1px solid var(--border)',
   borderRadius: '6px',
   fontSize: '0.85rem',
   boxSizing: 'border-box',

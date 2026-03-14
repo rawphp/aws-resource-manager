@@ -22,24 +22,24 @@ const thStyle: React.CSSProperties = {
   fontWeight: 600,
   fontSize: '0.8rem',
   textTransform: 'uppercase',
-  color: '#666',
-  borderBottom: '2px solid #e9ecef',
+  color: 'var(--text-muted)',
+  borderBottom: '2px solid var(--border-header)',
   cursor: 'pointer',
   userSelect: 'none',
 };
 
 const tdStyle: React.CSSProperties = {
   padding: '10px 12px',
-  borderBottom: '1px solid #f0f0f0',
+  borderBottom: '1px solid var(--border-row)',
   fontSize: '0.9rem',
 };
 
 const selectStyle: React.CSSProperties = {
   padding: '6px 10px',
   borderRadius: '6px',
-  border: '1px solid #ddd',
+  border: '1px solid var(--border)',
   fontSize: '0.85rem',
-  background: 'white',
+  background: 'var(--bg-primary)',
 };
 
 export function ResourceTable({
@@ -61,9 +61,9 @@ export function ResourceTable({
   };
 
   return (
-    <div style={{ background: 'white', borderRadius: '12px', boxShadow: '0 1px 3px rgba(0,0,0,0.1)', overflow: 'hidden' }}>
+    <div style={{ background: 'var(--bg-primary)', borderRadius: '12px', boxShadow: '0 1px 3px rgba(0,0,0,0.1)', overflow: 'hidden' }}>
       {/* Filters */}
-      <div style={{ padding: '16px', display: 'flex', gap: '12px', flexWrap: 'wrap', borderBottom: '1px solid #f0f0f0' }}>
+      <div style={{ padding: '16px', display: 'flex', gap: '12px', flexWrap: 'wrap', borderBottom: '1px solid var(--border-row)' }}>
         <input
           type="text"
           placeholder="Search by name or ID..."
@@ -133,7 +133,7 @@ export function ResourceTable({
           </thead>
           <tbody>
             {resources.map((r) => (
-              <tr key={`${r.account}-${r.id}`} style={{ background: selectedIds?.has(r.id) ? '#e8f0fe' : undefined }}>
+              <tr key={`${r.account}-${r.id}`} style={{ background: selectedIds?.has(r.id) ? 'var(--bg-selected)' : undefined }}>
                 {selectable && (
                   <td style={tdStyle}>
                     <input
@@ -153,7 +153,7 @@ export function ResourceTable({
                           href={consoleUrl}
                           target="_blank"
                           rel="noopener noreferrer"
-                          style={{ color: '#0073bb', textDecoration: 'none' }}
+                          style={{ color: 'var(--text-link)', textDecoration: 'none' }}
                           onMouseEnter={(e) => { (e.target as HTMLElement).style.textDecoration = 'underline'; }}
                           onMouseLeave={(e) => { (e.target as HTMLElement).style.textDecoration = 'none'; }}
                         >
@@ -164,20 +164,20 @@ export function ResourceTable({
                       <div style={{ fontWeight: 500 }}>{displayName}</div>
                     );
                   })()}
-                  <div style={{ fontSize: '0.75rem', color: '#999' }}>{r.id}</div>
+                  <div style={{ fontSize: '0.75rem', color: 'var(--text-faint)' }}>{r.id}</div>
                 </td>
                 <td style={tdStyle}>
                   <span style={{
                     padding: '2px 8px',
                     borderRadius: '4px',
-                    background: '#f0f0f0',
+                    background: 'var(--bg-secondary)',
                     fontSize: '0.8rem',
                     fontWeight: 500,
                   }}>
                     {r.service}
                   </span>
                 </td>
-                <td style={{ ...tdStyle, fontSize: '0.8rem', color: '#666' }}>{r.type}</td>
+                <td style={{ ...tdStyle, fontSize: '0.8rem', color: 'var(--text-muted)' }}>{r.type}</td>
                 <td style={tdStyle}>{r.region}</td>
                 <td style={tdStyle}>
                   <span style={{
@@ -185,15 +185,15 @@ export function ResourceTable({
                     borderRadius: '4px',
                     fontSize: '0.8rem',
                     background: r.state === 'running' || r.state === 'active' || r.state === 'available'
-                      ? '#d4edda'
+                      ? 'var(--state-running-bg)'
                       : r.state === 'stopped'
-                        ? '#f8d7da'
-                        : '#fff3cd',
+                        ? 'var(--state-stopped-bg)'
+                        : 'var(--state-other-bg)',
                     color: r.state === 'running' || r.state === 'active' || r.state === 'available'
-                      ? '#155724'
+                      ? 'var(--state-running-text)'
                       : r.state === 'stopped'
-                        ? '#721c24'
-                        : '#856404',
+                        ? 'var(--state-stopped-text)'
+                        : 'var(--state-other-text)',
                   }}>
                     {r.state}
                   </span>
@@ -207,7 +207,7 @@ export function ResourceTable({
             ))}
             {resources.length === 0 && (
               <tr>
-                <td colSpan={selectable ? 7 : 6} style={{ ...tdStyle, textAlign: 'center', color: '#999', padding: '40px' }}>
+                <td colSpan={selectable ? 7 : 6} style={{ ...tdStyle, textAlign: 'center', color: 'var(--text-faint)', padding: '40px' }}>
                   No resources found matching your filters.
                 </td>
               </tr>
@@ -215,7 +215,7 @@ export function ResourceTable({
           </tbody>
         </table>
       </div>
-      <div style={{ padding: '12px 16px', color: '#666', fontSize: '0.85rem', borderTop: '1px solid #f0f0f0' }}>
+      <div style={{ padding: '12px 16px', color: 'var(--text-muted)', fontSize: '0.85rem', borderTop: '1px solid var(--border-row)' }}>
         Showing {resources.length} resource{resources.length !== 1 ? 's' : ''}
       </div>
     </div>

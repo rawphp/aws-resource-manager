@@ -99,8 +99,8 @@ export function CleanupPanel({ selectedResources, onClearSelection }: CleanupPan
           bottom: '24px',
           left: '50%',
           transform: 'translateX(-50%)',
-          background: '#1a1a2e',
-          color: 'white',
+          background: 'var(--bg-cleanup-panel)',
+          color: 'var(--text-on-cleanup)',
           borderRadius: '12px',
           padding: '12px 24px',
           display: 'flex',
@@ -113,7 +113,7 @@ export function CleanupPanel({ selectedResources, onClearSelection }: CleanupPan
             {selectedResources.length} resource{selectedResources.length !== 1 ? 's' : ''} selected
           </span>
           {totalCostSavings > 0 && (
-            <span style={{ color: '#4ade80', fontSize: '0.9rem' }}>
+            <span style={{ color: 'var(--success-light)', fontSize: '0.9rem' }}>
               ~${totalCostSavings.toFixed(2)}/mo savings
             </span>
           )}
@@ -121,8 +121,8 @@ export function CleanupPanel({ selectedResources, onClearSelection }: CleanupPan
             onClick={onClearSelection}
             style={{
               padding: '6px 12px',
-              background: '#333',
-              color: 'white',
+              background: 'var(--bg-cleanup-input)',
+              color: 'var(--text-on-cleanup)',
               border: 'none',
               borderRadius: '6px',
               cursor: 'pointer',
@@ -135,8 +135,8 @@ export function CleanupPanel({ selectedResources, onClearSelection }: CleanupPan
             onClick={() => setShowConfirm(true)}
             style={{
               padding: '6px 16px',
-              background: '#e63946',
-              color: 'white',
+              background: 'var(--danger-strong)',
+              color: 'var(--text-on-accent)',
               border: 'none',
               borderRadius: '6px',
               cursor: 'pointer',
@@ -161,7 +161,7 @@ export function CleanupPanel({ selectedResources, onClearSelection }: CleanupPan
           zIndex: 200,
         }}>
           <div style={{
-            background: 'white',
+            background: 'var(--bg-primary)',
             borderRadius: '16px',
             padding: '32px',
             maxWidth: '600px',
@@ -172,10 +172,10 @@ export function CleanupPanel({ selectedResources, onClearSelection }: CleanupPan
             {/* Results view */}
             {results ? (
               <>
-                <h2 style={{ margin: '0 0 8px', color: failCount > 0 ? '#e63946' : '#2d6a4f' }}>
+                <h2 style={{ margin: '0 0 8px', color: failCount > 0 ? 'var(--danger-strong)' : 'var(--success-text)' }}>
                   Deletion {failCount > 0 ? 'Completed with Errors' : 'Complete'}
                 </h2>
-                <p style={{ color: '#666', marginBottom: '16px' }}>
+                <p style={{ color: 'var(--text-muted)', marginBottom: '16px' }}>
                   {successCount} succeeded, {failCount} failed
                 </p>
 
@@ -183,18 +183,18 @@ export function CleanupPanel({ selectedResources, onClearSelection }: CleanupPan
                   {results.map((r) => (
                     <div key={r.resourceId} style={{
                       padding: '8px 12px',
-                      borderBottom: '1px solid #f0f0f0',
+                      borderBottom: '1px solid var(--border-row)',
                       fontSize: '0.85rem',
                     }}>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                        <span style={{ color: r.success ? '#2d6a4f' : '#e63946' }}>
+                        <span style={{ color: r.success ? 'var(--success-text)' : 'var(--danger-strong)' }}>
                           {r.success ? 'Deleted' : 'Failed'}
                         </span>
                         <span style={{ fontWeight: 500 }}>{r.resourceId}</span>
-                        <span style={{ color: '#999' }}>({r.service})</span>
+                        <span style={{ color: 'var(--text-faint)' }}>({r.service})</span>
                       </div>
                       {r.error && (
-                        <div style={{ color: '#e63946', fontSize: '0.8rem', marginTop: '4px' }}>
+                        <div style={{ color: 'var(--danger-strong)', fontSize: '0.8rem', marginTop: '4px' }}>
                           {r.error}
                         </div>
                       )}
@@ -207,8 +207,8 @@ export function CleanupPanel({ selectedResources, onClearSelection }: CleanupPan
                     onClick={handleDismissResults}
                     style={{
                       padding: '10px 20px',
-                      background: '#4361ee',
-                      color: 'white',
+                      background: 'var(--accent)',
+                      color: 'var(--text-on-accent)',
                       border: 'none',
                       borderRadius: '6px',
                       cursor: 'pointer',
@@ -221,8 +221,8 @@ export function CleanupPanel({ selectedResources, onClearSelection }: CleanupPan
               </>
             ) : (
               <>
-                <h2 style={{ margin: '0 0 8px', color: '#e63946' }}>Confirm Resource Deletion</h2>
-                <p style={{ color: '#666', marginBottom: '16px' }}>
+                <h2 style={{ margin: '0 0 8px', color: 'var(--danger-strong)' }}>Confirm Resource Deletion</h2>
+                <p style={{ color: 'var(--text-muted)', marginBottom: '16px' }}>
                   You are about to delete {selectedResources.length} resource{selectedResources.length !== 1 ? 's' : ''}.
                   This action cannot be undone.
                 </p>
@@ -231,11 +231,11 @@ export function CleanupPanel({ selectedResources, onClearSelection }: CleanupPan
                   {selectedResources.map((r) => (
                     <div key={r.id} style={{
                       padding: '8px 12px',
-                      borderBottom: '1px solid #f0f0f0',
+                      borderBottom: '1px solid var(--border-row)',
                       fontSize: '0.85rem',
                     }}>
                       <div style={{ fontWeight: 500 }}>{r.name || r.id}</div>
-                      <div style={{ color: '#666', fontSize: '0.8rem' }}>
+                      <div style={{ color: 'var(--text-muted)', fontSize: '0.8rem' }}>
                         {r.service} / {r.type} / {r.region}
                         {r.estimatedMonthlyCost !== undefined && ` — $${r.estimatedMonthlyCost.toFixed(2)}/mo`}
                       </div>
@@ -246,7 +246,7 @@ export function CleanupPanel({ selectedResources, onClearSelection }: CleanupPan
                 {totalCostSavings > 0 && (
                   <div style={{
                     padding: '12px',
-                    background: '#d4edda',
+                    background: 'var(--bg-savings)',
                     borderRadius: '8px',
                     marginBottom: '16px',
                     fontSize: '0.9rem',
@@ -255,7 +255,7 @@ export function CleanupPanel({ selectedResources, onClearSelection }: CleanupPan
                   </div>
                 )}
 
-                <p style={{ fontSize: '0.85rem', color: '#666', marginBottom: '8px' }}>
+                <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginBottom: '8px' }}>
                   Type <strong>DELETE</strong> to confirm:
                 </p>
                 <input
@@ -267,7 +267,7 @@ export function CleanupPanel({ selectedResources, onClearSelection }: CleanupPan
                   style={{
                     width: '100%',
                     padding: '10px',
-                    border: '2px solid #ddd',
+                    border: '2px solid var(--border)',
                     borderRadius: '6px',
                     fontSize: '1rem',
                     marginBottom: '16px',
@@ -281,7 +281,7 @@ export function CleanupPanel({ selectedResources, onClearSelection }: CleanupPan
                     disabled={deleting}
                     style={{
                       padding: '10px 20px',
-                      background: '#f0f0f0',
+                      background: 'var(--bg-secondary)',
                       border: 'none',
                       borderRadius: '6px',
                       cursor: deleting ? 'not-allowed' : 'pointer',
@@ -294,8 +294,8 @@ export function CleanupPanel({ selectedResources, onClearSelection }: CleanupPan
                     onClick={handleDelete}
                     style={{
                       padding: '10px 20px',
-                      background: confirmText === 'DELETE' && !deleting ? '#e63946' : '#ccc',
-                      color: 'white',
+                      background: confirmText === 'DELETE' && !deleting ? 'var(--danger-strong)' : 'var(--bg-disabled)',
+                      color: 'var(--text-on-accent)',
                       border: 'none',
                       borderRadius: '6px',
                       cursor: confirmText === 'DELETE' && !deleting ? 'pointer' : 'not-allowed',

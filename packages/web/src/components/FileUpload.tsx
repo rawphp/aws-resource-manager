@@ -15,8 +15,8 @@ export function FileUpload({ onFileLoad, onScan, scanning, scanError }: FileUplo
       minHeight: '60vh',
       gap: '20px',
     }}>
-      <h1 style={{ fontSize: '2rem', color: '#1a1a2e' }}>AWS Resource Manager</h1>
-      <p style={{ color: '#666', maxWidth: '500px', textAlign: 'center' }}>
+      <h1 style={{ fontSize: '2rem', color: 'var(--text-primary)' }}>AWS Resource Manager</h1>
+      <p style={{ color: 'var(--text-muted)', maxWidth: '500px', textAlign: 'center' }}>
         Scan your AWS accounts or upload an existing report to visualize resources and costs.
       </p>
       {onScan && (
@@ -25,8 +25,8 @@ export function FileUpload({ onFileLoad, onScan, scanning, scanError }: FileUplo
           disabled={scanning}
           style={{
             padding: '16px 32px',
-            background: scanning ? '#ccc' : '#28a745',
-            color: 'white',
+            background: scanning ? 'var(--bg-disabled)' : 'var(--success)',
+            color: 'var(--text-on-accent)',
             border: 'none',
             borderRadius: '8px',
             cursor: scanning ? 'not-allowed' : 'pointer',
@@ -39,14 +39,14 @@ export function FileUpload({ onFileLoad, onScan, scanning, scanError }: FileUplo
         </button>
       )}
       {scanError && (
-        <span style={{ color: '#dc3545', fontSize: '0.9rem' }}>{scanError}</span>
+        <span style={{ color: 'var(--danger)', fontSize: '0.9rem' }}>{scanError}</span>
       )}
-      <p style={{ color: '#999', fontSize: '0.85rem' }}>or</p>
+      <p style={{ color: 'var(--text-faint)', fontSize: '0.85rem' }}>or</p>
       <label
         style={{
           padding: '16px 32px',
-          background: '#4361ee',
-          color: 'white',
+          background: 'var(--accent)',
+          color: 'var(--text-on-accent)',
           borderRadius: '8px',
           cursor: 'pointer',
           fontSize: '1rem',

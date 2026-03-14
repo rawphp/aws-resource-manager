@@ -67,8 +67,7 @@ export function App() {
         alignItems: 'center',
         justifyContent: 'center',
         minHeight: '60vh',
-        fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
-        color: '#666',
+        color: 'var(--text-muted)',
         fontSize: '1.1rem',
       }}>
         Loading report...
@@ -81,9 +80,9 @@ export function App() {
   }
 
   return (
-    <div style={{ padding: '24px', maxWidth: '1400px', margin: '0 auto', paddingBottom: '100px', fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif' }}>
+    <div style={{ padding: '24px', maxWidth: '1400px', margin: '0 auto', paddingBottom: '100px' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
-        <h1 style={{ fontSize: '1.5rem', color: '#1a1a2e', margin: 0 }}>
+        <h1 style={{ fontSize: '1.5rem', color: 'var(--text-primary)', margin: 0 }}>
           AWS Resource Manager
         </h1>
         <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
@@ -92,8 +91,8 @@ export function App() {
             disabled={scanning}
             style={{
               padding: '8px 16px',
-              background: scanning ? '#ccc' : '#28a745',
-              color: 'white',
+              background: scanning ? 'var(--bg-disabled)' : 'var(--success)',
+              color: 'var(--text-on-accent)',
               border: 'none',
               borderRadius: '6px',
               cursor: scanning ? 'not-allowed' : 'pointer',
@@ -105,7 +104,7 @@ export function App() {
             {scanning ? 'Scanning...' : 'Scan'}
           </button>
           {scanError && (
-            <span style={{ color: '#dc3545', fontSize: '0.8rem', maxWidth: '200px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+            <span style={{ color: 'var(--danger)', fontSize: '0.8rem', maxWidth: '200px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
               {scanError}
             </span>
           )}
@@ -120,9 +119,9 @@ export function App() {
               style={{
                 padding: '8px 12px',
                 borderRadius: '6px',
-                border: '1px solid #ddd',
+                border: '1px solid var(--border)',
                 fontSize: '0.85rem',
-                background: 'white',
+                background: 'var(--bg-primary)',
                 maxWidth: '300px',
               }}
             >
@@ -138,8 +137,8 @@ export function App() {
               onClick={() => setView(v)}
               style={{
                 padding: '8px 16px',
-                background: view === v ? '#4361ee' : '#f0f0f0',
-                color: view === v ? 'white' : '#333',
+                background: view === v ? 'var(--accent)' : 'var(--bg-secondary)',
+                color: view === v ? 'var(--text-on-accent)' : 'var(--text-secondary)',
                 border: 'none',
                 borderRadius: '6px',
                 cursor: 'pointer',
