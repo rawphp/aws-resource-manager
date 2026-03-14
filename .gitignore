@@ -10,3 +10,7 @@ reports/*
 accounts.yaml
 
 !reports/.gitkeep
+
+# Prevent compiled JS/declaration files from being committed alongside source .ts files
+packages/*/src/**/*.js
+packages/*/src/**/*.d.ts
