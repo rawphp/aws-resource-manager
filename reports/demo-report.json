@@ -1,0 +1,389 @@
+{
+  "generatedAt": "2026-03-14T12:00:00.000Z",
+  "accounts": [
+    {
+      "account": "production",
+      "scannedAt": "2026-03-14T11:58:00.000Z",
+      "regions": {
+        "us-east-1": {
+          "ec2": {
+            "service": "ec2",
+            "region": "us-east-1",
+            "resources": [
+              {
+                "id": "i-0a1b2c3d4e5f60001",
+                "arn": "arn:aws:ec2:us-east-1:111111111111:instance/i-0a1b2c3d4e5f60001",
+                "type": "ec2:instance:m5.xlarge",
+                "service": "ec2",
+                "name": "api-server-prod",
+                "region": "us-east-1",
+                "state": "running",
+                "createdAt": "2025-06-15T08:30:00.000Z",
+                "tags": { "Environment": "production", "Team": "backend" },
+                "estimatedMonthlyCost": 140.16
+              },
+              {
+                "id": "i-0a1b2c3d4e5f60002",
+                "arn": "arn:aws:ec2:us-east-1:111111111111:instance/i-0a1b2c3d4e5f60002",
+                "type": "ec2:instance:t3.medium",
+                "service": "ec2",
+                "name": "staging-worker",
+                "region": "us-east-1",
+                "state": "stopped",
+                "createdAt": "2025-09-20T14:00:00.000Z",
+                "tags": { "Environment": "staging", "Team": "backend" },
+                "estimatedMonthlyCost": 0
+              }
+            ],
+            "errors": []
+          },
+          "rds": {
+            "service": "rds",
+            "region": "us-east-1",
+            "resources": [
+              {
+                "id": "prod-db-primary",
+                "arn": "arn:aws:rds:us-east-1:111111111111:db:prod-db-primary",
+                "type": "rds:instance:db.r5.large",
+                "service": "rds",
+                "name": "prod-db-primary",
+                "region": "us-east-1",
+                "state": "available",
+                "createdAt": "2025-03-10T09:00:00.000Z",
+                "tags": { "Environment": "production", "Team": "data" },
+                "estimatedMonthlyCost": 175.20
+              }
+            ],
+            "errors": []
+          },
+          "lambda": {
+            "service": "lambda",
+            "region": "us-east-1",
+            "resources": [
+              {
+                "id": "invoice-processor",
+                "arn": "arn:aws:lambda:us-east-1:111111111111:function:invoice-processor",
+                "type": "lambda:function:nodejs20.x",
+                "service": "lambda",
+                "name": "invoice-processor",
+                "region": "us-east-1",
+                "state": "Active",
+                "createdAt": "2025-11-01T10:00:00.000Z",
+                "tags": { "Environment": "production", "Team": "billing" },
+                "estimatedMonthlyCost": 12.50
+              }
+            ],
+            "errors": []
+          },
+          "elb": {
+            "service": "elb",
+            "region": "us-east-1",
+            "resources": [
+              {
+                "id": "arn:aws:elasticloadbalancing:us-east-1:111111111111:loadbalancer/app/api-lb/abc123",
+                "arn": "arn:aws:elasticloadbalancing:us-east-1:111111111111:loadbalancer/app/api-lb/abc123",
+                "type": "elb:application",
+                "service": "elb",
+                "name": "api-lb",
+                "region": "us-east-1",
+                "state": "active",
+                "createdAt": "2025-06-15T08:45:00.000Z",
+                "tags": { "Environment": "production" },
+                "estimatedMonthlyCost": 22.27
+              }
+            ],
+            "errors": []
+          }
+        },
+        "eu-west-1": {
+          "ec2": {
+            "service": "ec2",
+            "region": "eu-west-1",
+            "resources": [
+              {
+                "id": "vol-0aabbccdd1122334",
+                "arn": "arn:aws:ec2:eu-west-1:111111111111:volume/vol-0aabbccdd1122334",
+                "type": "ec2:volume:gp3:500GB",
+                "service": "ec2",
+                "name": "orphaned-data-vol",
+                "region": "eu-west-1",
+                "state": "unattached",
+                "createdAt": "2025-08-05T16:00:00.000Z",
+                "tags": {},
+                "estimatedMonthlyCost": 40.00
+              }
+            ],
+            "errors": []
+          },
+          "elasticache": {
+            "service": "elasticache",
+            "region": "eu-west-1",
+            "resources": [
+              {
+                "id": "eu-cache-cluster",
+                "arn": "arn:aws:elasticache:eu-west-1:111111111111:cluster:eu-cache-cluster",
+                "type": "elasticache:redis:cache.r6g.large",
+                "service": "elasticache",
+                "name": "eu-cache-cluster",
+                "region": "eu-west-1",
+                "state": "available",
+                "createdAt": "2025-07-20T12:00:00.000Z",
+                "tags": { "Environment": "production", "Team": "platform" },
+                "estimatedMonthlyCost": 131.40
+              }
+            ],
+            "errors": []
+          }
+        },
+        "ap-southeast-1": {
+          "eks": {
+            "service": "eks",
+            "region": "ap-southeast-1",
+            "resources": [
+              {
+                "id": "apac-cluster",
+                "arn": "arn:aws:eks:ap-southeast-1:111111111111:cluster/apac-cluster",
+                "type": "eks:cluster:1.29",
+                "service": "eks",
+                "name": "apac-cluster",
+                "region": "ap-southeast-1",
+                "state": "ACTIVE",
+                "createdAt": "2025-12-01T03:00:00.000Z",
+                "tags": { "Environment": "production", "Team": "platform" },
+                "estimatedMonthlyCost": 73.00
+              }
+            ],
+            "errors": []
+          },
+          "dynamodb": {
+            "service": "dynamodb",
+            "region": "ap-southeast-1",
+            "resources": [
+              {
+                "id": "arn:aws:dynamodb:ap-southeast-1:111111111111:table/sessions",
+                "arn": "arn:aws:dynamodb:ap-southeast-1:111111111111:table/sessions",
+                "type": "dynamodb:table:PAY_PER_REQUEST",
+                "service": "dynamodb",
+                "name": "sessions",
+                "region": "ap-southeast-1",
+                "state": "ACTIVE",
+                "createdAt": "2025-12-01T03:15:00.000Z",
+                "tags": { "Environment": "production" },
+                "estimatedMonthlyCost": 8.75
+              }
+            ],
+            "errors": []
+          }
+        },
+        "global": {
+          "s3": {
+            "service": "s3",
+            "region": "global",
+            "resources": [
+              {
+                "id": "acme-prod-assets",
+                "arn": "arn:aws:s3:::acme-prod-assets",
+                "type": "s3:bucket",
+                "service": "s3",
+                "name": "acme-prod-assets",
+                "region": "global",
+                "state": "active",
+                "createdAt": "2025-01-10T07:00:00.000Z",
+                "tags": { "Environment": "production", "Team": "frontend" },
+                "estimatedMonthlyCost": 23.40
+              }
+            ],
+            "errors": []
+          },
+          "cloudfront": {
+            "service": "cloudfront",
+            "region": "global",
+            "resources": [
+              {
+                "id": "E1A2B3C4D5E6F7",
+                "arn": "arn:aws:cloudfront::111111111111:distribution/E1A2B3C4D5E6F7",
+                "type": "cloudfront:distribution",
+                "service": "cloudfront",
+                "name": "cdn.acme.com",
+                "region": "global",
+                "state": "Deployed",
+                "createdAt": "2025-01-10T07:30:00.000Z",
+                "tags": { "Environment": "production" },
+                "estimatedMonthlyCost": 85.00
+              }
+            ],
+            "errors": []
+          }
+        }
+      }
+    }
+  ],
+  "costBreakdowns": {
+    "production": [
+      { "service": "ec2", "region": "us-east-1", "amount": 140.16, "currency": "USD", "period": { "start": "2026-02-14", "end": "2026-03-14" } },
+      { "service": "rds", "region": "us-east-1", "amount": 175.20, "currency": "USD", "period": { "start": "2026-02-14", "end": "2026-03-14" } },
+      { "service": "lambda", "region": "us-east-1", "amount": 12.50, "currency": "USD", "period": { "start": "2026-02-14", "end": "2026-03-14" } },
+      { "service": "elb", "region": "us-east-1", "amount": 22.27, "currency": "USD", "period": { "start": "2026-02-14", "end": "2026-03-14" } },
+      { "service": "ec2", "region": "eu-west-1", "amount": 40.00, "currency": "USD", "period": { "start": "2026-02-14", "end": "2026-03-14" } },
+      { "service": "elasticache", "region": "eu-west-1", "amount": 131.40, "currency": "USD", "period": { "start": "2026-02-14", "end": "2026-03-14" } },
+      { "service": "eks", "region": "ap-southeast-1", "amount": 73.00, "currency": "USD", "period": { "start": "2026-02-14", "end": "2026-03-14" } },
+      { "service": "dynamodb", "region": "ap-southeast-1", "amount": 8.75, "currency": "USD", "period": { "start": "2026-02-14", "end": "2026-03-14" } },
+      { "service": "s3", "region": "global", "amount": 23.40, "currency": "USD", "period": { "start": "2026-02-14", "end": "2026-03-14" } },
+      { "service": "cloudfront", "region": "global", "amount": 85.00, "currency": "USD", "period": { "start": "2026-02-14", "end": "2026-03-14" } }
+    ]
+  },
+  "summary": {
+    "totalResources": 12,
+    "totalEstimatedMonthlyCost": 711.68,
+    "resourcesByService": {
+      "ec2": 3,
+      "rds": 1,
+      "lambda": 1,
+      "elb": 1,
+      "elasticache": 1,
+      "eks": 1,
+      "dynamodb": 1,
+      "s3": 1,
+      "cloudfront": 1
+    },
+    "costByService": {
+      "ec2": 180.16,
+      "rds": 175.20,
+      "elasticache": 131.40,
+      "cloudfront": 85.00,
+      "eks": 73.00,
+      "s3": 23.40,
+      "elb": 22.27,
+      "lambda": 12.50,
+      "dynamodb": 8.75
+    },
+    "costByRegion": {
+      "us-east-1": 350.13,
+      "eu-west-1": 171.40,
+      "ap-southeast-1": 81.75,
+      "global": 108.40
+    },
+    "topResources": [
+      {
+        "id": "prod-db-primary",
+        "arn": "arn:aws:rds:us-east-1:111111111111:db:prod-db-primary",
+        "type": "rds:instance:db.r5.large",
+        "service": "rds",
+        "name": "prod-db-primary",
+        "region": "us-east-1",
+        "state": "available",
+        "createdAt": "2025-03-10T09:00:00.000Z",
+        "tags": { "Environment": "production", "Team": "data" },
+        "estimatedMonthlyCost": 175.20
+      },
+      {
+        "id": "i-0a1b2c3d4e5f60001",
+        "arn": "arn:aws:ec2:us-east-1:111111111111:instance/i-0a1b2c3d4e5f60001",
+        "type": "ec2:instance:m5.xlarge",
+        "service": "ec2",
+        "name": "api-server-prod",
+        "region": "us-east-1",
+        "state": "running",
+        "createdAt": "2025-06-15T08:30:00.000Z",
+        "tags": { "Environment": "production", "Team": "backend" },
+        "estimatedMonthlyCost": 140.16
+      },
+      {
+        "id": "eu-cache-cluster",
+        "arn": "arn:aws:elasticache:eu-west-1:111111111111:cluster:eu-cache-cluster",
+        "type": "elasticache:redis:cache.r6g.large",
+        "service": "elasticache",
+        "name": "eu-cache-cluster",
+        "region": "eu-west-1",
+        "state": "available",
+        "createdAt": "2025-07-20T12:00:00.000Z",
+        "tags": { "Environment": "production", "Team": "platform" },
+        "estimatedMonthlyCost": 131.40
+      },
+      {
+        "id": "E1A2B3C4D5E6F7",
+        "arn": "arn:aws:cloudfront::111111111111:distribution/E1A2B3C4D5E6F7",
+        "type": "cloudfront:distribution",
+        "service": "cloudfront",
+        "name": "cdn.acme.com",
+        "region": "global",
+        "state": "Deployed",
+        "createdAt": "2025-01-10T07:30:00.000Z",
+        "tags": { "Environment": "production" },
+        "estimatedMonthlyCost": 85.00
+      },
+      {
+        "id": "apac-cluster",
+        "arn": "arn:aws:eks:ap-southeast-1:111111111111:cluster/apac-cluster",
+        "type": "eks:cluster:1.29",
+        "service": "eks",
+        "name": "apac-cluster",
+        "region": "ap-southeast-1",
+        "state": "ACTIVE",
+        "createdAt": "2025-12-01T03:00:00.000Z",
+        "tags": { "Environment": "production", "Team": "platform" },
+        "estimatedMonthlyCost": 73.00
+      },
+      {
+        "id": "vol-0aabbccdd1122334",
+        "arn": "arn:aws:ec2:eu-west-1:111111111111:volume/vol-0aabbccdd1122334",
+        "type": "ec2:volume:gp3:500GB",
+        "service": "ec2",
+        "name": "orphaned-data-vol",
+        "region": "eu-west-1",
+        "state": "unattached",
+        "createdAt": "2025-08-05T16:00:00.000Z",
+        "tags": {},
+        "estimatedMonthlyCost": 40.00
+      },
+      {
+        "id": "acme-prod-assets",
+        "arn": "arn:aws:s3:::acme-prod-assets",
+        "type": "s3:bucket",
+        "service": "s3",
+        "name": "acme-prod-assets",
+        "region": "global",
+        "state": "active",
+        "createdAt": "2025-01-10T07:00:00.000Z",
+        "tags": { "Environment": "production", "Team": "frontend" },
+        "estimatedMonthlyCost": 23.40
+      },
+      {
+        "id": "arn:aws:elasticloadbalancing:us-east-1:111111111111:loadbalancer/app/api-lb/abc123",
+        "arn": "arn:aws:elasticloadbalancing:us-east-1:111111111111:loadbalancer/app/api-lb/abc123",
+        "type": "elb:application",
+        "service": "elb",
+        "name": "api-lb",
+        "region": "us-east-1",
+        "state": "active",
+        "createdAt": "2025-06-15T08:45:00.000Z",
+        "tags": { "Environment": "production" },
+        "estimatedMonthlyCost": 22.27
+      },
+      {
+        "id": "invoice-processor",
+        "arn": "arn:aws:lambda:us-east-1:111111111111:function:invoice-processor",
+        "type": "lambda:function:nodejs20.x",
+        "service": "lambda",
+        "name": "invoice-processor",
+        "region": "us-east-1",
+        "state": "Active",
+        "createdAt": "2025-11-01T10:00:00.000Z",
+        "tags": { "Environment": "production", "Team": "billing" },
+        "estimatedMonthlyCost": 12.50
+      },
+      {
+        "id": "arn:aws:dynamodb:ap-southeast-1:111111111111:table/sessions",
+        "arn": "arn:aws:dynamodb:ap-southeast-1:111111111111:table/sessions",
+        "type": "dynamodb:table:PAY_PER_REQUEST",
+        "service": "dynamodb",
+        "name": "sessions",
+        "region": "ap-southeast-1",
+        "state": "ACTIVE",
+        "createdAt": "2025-12-01T03:15:00.000Z",
+        "tags": { "Environment": "production" },
+        "estimatedMonthlyCost": 8.75
+      }
+    ]
+  }
+}

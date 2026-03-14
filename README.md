@@ -7,6 +7,8 @@ Scan all your AWS resources across every region and service, see what you're bei
 
 Works with multiple AWS accounts. Everything is managed from the web dashboard — add accounts, run scans, view reports, and delete unused resources.
 
+![Dashboard Screenshot](dashboard.png)
+
 ## What It Does
 
 1. **Configure** - Add your AWS accounts from the dashboard
