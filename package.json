@@ -2,6 +2,9 @@
   "name": "aws-resource-manager",
   "version": "1.0.0",
   "private": true,
+  "engines": {
+    "node": ">=18.0.0"
+  },
   "workspaces": [
     "packages/shared",
     "packages/scanner",
