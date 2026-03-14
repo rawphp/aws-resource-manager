@@ -1,6 +1,6 @@
 # AWS Resource Manager
 
-[![CI](https://github.com/tomkaczocha/aws-resource-manager/actions/workflows/ci.yml/badge.svg)](https://github.com/tomkaczocha/aws-resource-manager/actions/workflows/ci.yml)
+[![CI](https://github.com/rawphp/aws-resource-manager/actions/workflows/ci.yml/badge.svg)](https://github.com/rawphp/aws-resource-manager/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 Scan all your AWS resources across every region and service, see what you're being charged for, and clean up what you don't need.
@@ -22,7 +22,7 @@ EC2 (instances, EBS volumes, Elastic IPs, NAT Gateways), S3, RDS (instances + cl
 ### 1. Install
 
 ```bash
-git clone https://github.com/tomkaczocha/aws-resource-manager.git
+git clone https://github.com/rawphp/aws-resource-manager.git
 cd aws-resource-manager
 npm install
 npm run build
