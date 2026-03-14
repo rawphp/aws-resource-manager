@@ -4,9 +4,15 @@ set -e
 REPO="https://github.com/rawphp/aws-resource-manager.git"
 DIR="aws-resource-manager"
 
-echo "==> Cloning repository..."
-git clone "$REPO" "$DIR"
-cd "$DIR"
+if [ -d "$DIR/.git" ]; then
+  echo "==> Updating existing installation..."
+  cd "$DIR"
+  git pull
+else
+  echo "==> Cloning repository..."
+  git clone "$REPO" "$DIR"
+  cd "$DIR"
+fi
 
 echo "==> Installing dependencies..."
 npm install
