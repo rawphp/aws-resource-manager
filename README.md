@@ -22,24 +22,13 @@ EC2 (instances, EBS volumes, Elastic IPs, NAT Gateways), S3, RDS (instances + cl
 
 ## Quick Start
 
-### 1. Install
-
 ```bash
-git clone https://github.com/rawphp/aws-resource-manager.git
-cd aws-resource-manager
-npm install
-npm run build
+curl -fsSL https://raw.githubusercontent.com/rawphp/aws-resource-manager/main/setup.sh | bash
 ```
 
-Requires **Node.js 18+**.
+That's it — clones the repo, installs dependencies, builds all packages, and opens the dashboard at `http://localhost:5173`.
 
-### 2. Launch the Dashboard
-
-```bash
-npm run dev --workspace=packages/web
-```
-
-Open `http://localhost:5173`.
+Requires **Git** and **Node.js 18+**.
 
 ### 3. Add an AWS Account
 
