@@ -159,10 +159,30 @@ describe('getAwsConsoleUrl', () => {
     expect(url).toBe('https://us-east-1.console.aws.amazon.com/dynamodbv2/home?region=us-east-1#table?name=my-table');
   });
 
-  it('returns an ElastiCache cluster URL', () => {
+  it('returns an ElastiCache Redis cluster URL', () => {
     const url = getAwsConsoleUrl(makeResource({
       service: 'elasticache',
       type: 'elasticache:redis:cache.t3.micro',
+      id: 'my-cache',
+      region: 'us-east-1',
+    }));
+    expect(url).toBe('https://us-east-1.console.aws.amazon.com/elasticache/home?region=us-east-1#/redis/my-cache');
+  });
+
+  it('returns an ElastiCache Memcached cluster URL', () => {
+    const url = getAwsConsoleUrl(makeResource({
+      service: 'elasticache',
+      type: 'elasticache:memcached:cache.t3.micro',
+      id: 'my-memcached',
+      region: 'us-west-2',
+    }));
+    expect(url).toBe('https://us-west-2.console.aws.amazon.com/elasticache/home?region=us-west-2#/memcached/my-memcached');
+  });
+
+  it('returns an ElastiCache URL defaulting to redis for unknown engine', () => {
+    const url = getAwsConsoleUrl(makeResource({
+      service: 'elasticache',
+      type: 'elasticache:unknown:cache.t3.micro',
       id: 'my-cache',
       region: 'us-east-1',
     }));

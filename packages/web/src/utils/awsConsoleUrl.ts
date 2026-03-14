@@ -50,8 +50,11 @@ export function getAwsConsoleUrl(resource: DiscoveredResource): string | null {
     }
     case 'dynamodb':
       return `${regionUrl(r)}/dynamodbv2/home?region=${r}#table?name=${id}`;
-    case 'elasticache':
-      return `${regionUrl(r)}/elasticache/home?region=${r}#/redis/${id}`;
+    case 'elasticache': {
+      const engine = type.split(':')[1];
+      const enginePath = engine === 'memcached' ? 'memcached' : 'redis';
+      return `${regionUrl(r)}/elasticache/home?region=${r}#/${enginePath}/${id}`;
+    }
     case 'redshift':
       return `${regionUrl(r)}/redshiftv2/home?region=${r}#cluster-details?cluster=${id}`;
     case 'opensearch':
