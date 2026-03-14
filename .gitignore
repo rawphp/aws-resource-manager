@@ -4,6 +4,8 @@ dist/
 .env.*
 *.tsbuildinfo
 coverage/
-reports/
+reports/*
 
 accounts.yaml
+
+!reports/.gitkeep
