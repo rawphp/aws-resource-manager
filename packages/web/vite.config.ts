@@ -1,6 +1,6 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
-import { readdirSync, readFileSync, existsSync } from 'fs';
+import { readdirSync, readFileSync, writeFileSync, existsSync } from 'fs';
 import { join, resolve } from 'path';
 import type { Plugin } from 'vite';
 import type { IncomingMessage, ServerResponse } from 'http';
@@ -259,6 +259,166 @@ function scanApiPlugin(): Plugin {
   };
 }
 
+interface AccountEntry {
+  name: string;
+  accessKeyId: string;
+  secretAccessKey: string;
+  defaultRegion?: string;
+  roleArn?: string;
+  sessionToken?: string;
+}
+
+function maskSecret(value: string | undefined): string | undefined {
+  if (!value) return undefined;
+  return '****' + value.slice(-4);
+}
+
+function accountsApiPlugin(): Plugin {
+  const configPath = resolve(__dirname, '../../accounts.yaml');
+
+  function readAccounts(): AccountEntry[] {
+    if (!existsSync(configPath)) return [];
+    const content = readFileSync(configPath, 'utf-8');
+    // Dynamic import won't work at top level for yaml, so we use a sync require-style approach
+    // The yaml package is available via the scanner workspace
+    try {
+      // eslint-disable-next-line @typescript-eslint/no-require-imports
+      const yaml = require('yaml');
+      const parsed = yaml.parse(content);
+      return parsed?.accounts || [];
+    } catch {
+      return [];
+    }
+  }
+
+  function writeAccounts(accounts: AccountEntry[]): void {
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
+    const yaml = require('yaml');
+    writeFileSync(configPath, yaml.stringify({ accounts }), 'utf-8');
+  }
+
+  return {
+    name: 'accounts-api',
+    configureServer(server) {
+      server.middlewares.use(async (req: IncomingMessage, res: ServerResponse, next: () => void) => {
+        // GET /api/accounts
+        if (req.url === '/api/accounts' && req.method === 'GET') {
+          res.setHeader('Content-Type', 'application/json');
+          const accounts = readAccounts().map((a) => ({
+            ...a,
+            secretAccessKey: maskSecret(a.secretAccessKey) || '',
+            sessionToken: maskSecret(a.sessionToken),
+          }));
+          res.end(JSON.stringify({ accounts }));
+          return;
+        }
+
+        // POST /api/accounts
+        if (req.url === '/api/accounts' && req.method === 'POST') {
+          res.setHeader('Content-Type', 'application/json');
+          try {
+            const body = await readBody(req);
+            const account: AccountEntry = JSON.parse(body);
+
+            if (!account.name || !account.accessKeyId || !account.secretAccessKey) {
+              res.statusCode = 400;
+              res.end(JSON.stringify({ error: 'name, accessKeyId, and secretAccessKey are required' }));
+              return;
+            }
+
+            const accounts = readAccounts();
+            if (accounts.some((a) => a.name === account.name)) {
+              res.statusCode = 409;
+              res.end(JSON.stringify({ error: `Account "${account.name}" already exists` }));
+              return;
+            }
+
+            // Only include defined optional fields
+            const entry: AccountEntry = {
+              name: account.name,
+              accessKeyId: account.accessKeyId,
+              secretAccessKey: account.secretAccessKey,
+            };
+            if (account.defaultRegion) entry.defaultRegion = account.defaultRegion;
+            if (account.roleArn) entry.roleArn = account.roleArn;
+            if (account.sessionToken) entry.sessionToken = account.sessionToken;
+
+            accounts.push(entry);
+            writeAccounts(accounts);
+            res.statusCode = 201;
+            res.end(JSON.stringify({ success: true }));
+          } catch {
+            res.statusCode = 400;
+            res.end(JSON.stringify({ error: 'Invalid JSON' }));
+          }
+          return;
+        }
+
+        // PUT /api/accounts/:name
+        if (req.url?.startsWith('/api/accounts/') && req.method === 'PUT') {
+          res.setHeader('Content-Type', 'application/json');
+          const accountName = decodeURIComponent(req.url.replace('/api/accounts/', ''));
+
+          try {
+            const body = await readBody(req);
+            const updates: Partial<AccountEntry> = JSON.parse(body);
+
+            const accounts = readAccounts();
+            const index = accounts.findIndex((a) => a.name === accountName);
+
+            if (index === -1) {
+              res.statusCode = 404;
+              res.end(JSON.stringify({ error: `Account "${accountName}" not found` }));
+              return;
+            }
+
+            // Update fields — don't overwrite secrets if masked value sent back
+            if (updates.name) accounts[index].name = updates.name;
+            if (updates.accessKeyId) accounts[index].accessKeyId = updates.accessKeyId;
+            if (updates.secretAccessKey && !updates.secretAccessKey.startsWith('****')) {
+              accounts[index].secretAccessKey = updates.secretAccessKey;
+            }
+            if (updates.defaultRegion !== undefined) accounts[index].defaultRegion = updates.defaultRegion || undefined;
+            if (updates.roleArn !== undefined) accounts[index].roleArn = updates.roleArn || undefined;
+            if (updates.sessionToken && !updates.sessionToken.startsWith('****')) {
+              accounts[index].sessionToken = updates.sessionToken;
+            }
+
+            writeAccounts(accounts);
+            res.end(JSON.stringify({ success: true }));
+          } catch {
+            res.statusCode = 400;
+            res.end(JSON.stringify({ error: 'Invalid JSON' }));
+          }
+          return;
+        }
+
+        // DELETE /api/accounts/:name
+        if (req.url?.startsWith('/api/accounts/') && req.method === 'DELETE') {
+          res.setHeader('Content-Type', 'application/json');
+          const accountName = decodeURIComponent(req.url.replace('/api/accounts/', ''));
+
+          const accounts = readAccounts();
+          const index = accounts.findIndex((a) => a.name === accountName);
+
+          if (index === -1) {
+            res.statusCode = 404;
+            res.end(JSON.stringify({ error: `Account "${accountName}" not found` }));
+            return;
+          }
+
+          accounts.splice(index, 1);
+          writeAccounts(accounts);
+          res.end(JSON.stringify({ success: true }));
+          return;
+        }
+
+        next();
+      });
+    },
+  };
+}
+
 export default defineConfig({
-  plugins: [react(), reportsApiPlugin(), deleteApiPlugin(), scanApiPlugin()],
+  plugins: [react(), reportsApiPlugin(), deleteApiPlugin(), scanApiPlugin(), accountsApiPlugin()],
 });
