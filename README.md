@@ -1,5 +1,8 @@
 # AWS Resource Manager
 
+[![CI](https://github.com/tomkaczocha/aws-resource-manager/actions/workflows/ci.yml/badge.svg)](https://github.com/tomkaczocha/aws-resource-manager/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+
 Scan all your AWS resources across every region and service, see what you're being charged for, and clean up what you don't need.
 
 Works with multiple AWS accounts. Generates a JSON report that powers both a CLI summary and a web dashboard.
@@ -19,11 +22,13 @@ EC2 (instances, EBS volumes, Elastic IPs, NAT Gateways), S3, RDS (instances + cl
 ### 1. Install
 
 ```bash
-git clone <repo-url>
+git clone https://github.com/tomkaczocha/aws-resource-manager.git
 cd aws-resource-manager
 npm install
 npm run build
 ```
+
+Requires **Node.js 18+**.
 
 ### 2. Configure Accounts
 
@@ -46,7 +51,7 @@ accounts:
     roleArn: arn:aws:iam::123456789012:role/ReadOnlyAccess
 ```
 
-**Never commit `accounts.yaml` to version control.** It's already in `.gitignore`.
+**Never commit `accounts.yaml` to version control.** It's already in `.gitignore`. See [SECURITY.md](SECURITY.md) for credential best practices.
 
 ### 3. Run a Scan
 
@@ -109,7 +114,59 @@ The dashboard has two views:
 
 ## IAM Permissions
 
-The scanning account needs read-only access to the services being scanned. The recommended approach is to use the `ReadOnlyAccess` AWS managed policy or create a custom policy scoped to the specific services.
+The scanning account needs read-only access to the services being scanned. Here's a minimal IAM policy for scanning:
+
+```json
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [
+        "ec2:Describe*",
+        "s3:ListAllMyBuckets",
+        "s3:GetBucketLocation",
+        "s3:GetBucketTagging",
+        "rds:DescribeDBInstances",
+        "rds:DescribeDBClusters",
+        "rds:ListTagsForResource",
+        "lambda:ListFunctions",
+        "lambda:ListTags",
+        "elasticloadbalancing:DescribeLoadBalancers",
+        "elasticloadbalancing:DescribeTags",
+        "cloudfront:ListDistributions",
+        "cloudfront:ListTagsForResource",
+        "route53:ListHostedZones",
+        "route53:ListResourceRecordSets",
+        "route53:ListTagsForResource",
+        "ecs:ListClusters",
+        "ecs:DescribeClusters",
+        "ecs:ListServices",
+        "ecs:DescribeServices",
+        "ecs:ListTagsForResource",
+        "dynamodb:ListTables",
+        "dynamodb:DescribeTable",
+        "dynamodb:ListTagsOfResource",
+        "elasticache:DescribeCacheClusters",
+        "elasticache:DescribeReplicationGroups",
+        "elasticache:ListTagsForResource",
+        "redshift:DescribeClusters",
+        "es:ListDomainNames",
+        "es:DescribeDomains",
+        "es:ListTags",
+        "sagemaker:ListNotebookInstances",
+        "sagemaker:ListEndpoints",
+        "sagemaker:ListTags",
+        "eks:ListClusters",
+        "eks:DescribeCluster",
+        "ce:GetCostAndUsage",
+        "sts:GetCallerIdentity"
+      ],
+      "Resource": "*"
+    }
+  ]
+}
+```
 
 For cleanup/deletion, the account also needs write permissions for the targeted services.
 
@@ -127,5 +184,12 @@ packages/
 ```bash
 npm install
 npm run build        # Build all packages
-npm run test         # Run all tests (41 tests across 7 files)
+npm run test         # Run all tests
+npm run lint         # Run ESLint
 ```
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for contribution guidelines and [SECURITY.md](SECURITY.md) for credential management best practices.
+
+## License
+
+[MIT](LICENSE)
