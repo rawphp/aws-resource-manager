@@ -1,0 +1,171 @@
+/* Theme System — CSS Custom Properties */
+
+:root,
+[data-theme="light"] {
+  --bg-primary: #ffffff;
+  --bg-secondary: #f8f9fa;
+  --bg-card: #ffffff;
+  --bg-input: #ffffff;
+  --bg-selected: #e8f0fe;
+  --bg-bar: #f0f0f0;
+  --bg-bar-fill: #4361ee;
+  --bg-savings: #d4edda;
+  --bg-waste: #fff5f5;
+  --bg-waste-badge: #f8d7da;
+  --bg-cleanup-panel: #1a1a2e;
+  --bg-cleanup-input: #333;
+  --bg-disabled: #ccc;
+
+  --text-primary: #1a1a2e;
+  --text-secondary: #333;
+  --text-muted: #666;
+  --text-faint: #999;
+  --text-on-accent: #ffffff;
+  --text-on-cleanup: #ffffff;
+  --text-link: #0073bb;
+  --text-waste: #721c24;
+
+  --border: #ddd;
+  --border-light: #eee;
+  --border-row: #f0f0f0;
+  --border-header: #e9ecef;
+
+  --accent: #4361ee;
+  --accent-hover: #3a56d4;
+  --success: #28a745;
+  --success-text: #2d6a4f;
+  --success-light: #4ade80;
+  --success-dark: #155724;
+  --danger: #dc3545;
+  --danger-strong: #e63946;
+  --danger-text: #721c24;
+  --warning-bg: #fff3cd;
+  --warning-text: #856404;
+  --no-waste: #27ae60;
+
+  --state-running-bg: #d4edda;
+  --state-running-text: #155724;
+  --state-stopped-bg: #f8d7da;
+  --state-stopped-text: #721c24;
+  --state-other-bg: #fff3cd;
+  --state-other-text: #856404;
+
+  --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+[data-theme="dark"] {
+  --bg-primary: #0f0f1a;
+  --bg-secondary: #1a1a2e;
+  --bg-card: #1e1e32;
+  --bg-input: #2a2a40;
+  --bg-selected: #2a3a5e;
+  --bg-bar: #2a2a40;
+  --bg-bar-fill: #5b7cfa;
+  --bg-savings: #1a3a2a;
+  --bg-waste: #3a1a1a;
+  --bg-waste-badge: #4a2020;
+  --bg-cleanup-panel: #0a0a14;
+  --bg-cleanup-input: #2a2a40;
+  --bg-disabled: #444;
+
+  --text-primary: #e8e8f0;
+  --text-secondary: #c0c0d0;
+  --text-muted: #8888a0;
+  --text-faint: #666680;
+  --text-on-accent: #ffffff;
+  --text-on-cleanup: #e8e8f0;
+  --text-link: #6eb5e8;
+  --text-waste: #f0a0a0;
+
+  --border: #333350;
+  --border-light: #2a2a40;
+  --border-row: #252540;
+  --border-header: #333350;
+
+  --accent: #5b7cfa;
+  --accent-hover: #4a6ae8;
+  --success: #2ecc71;
+  --success-text: #4ade80;
+  --success-light: #4ade80;
+  --success-dark: #2ecc71;
+  --danger: #e74c3c;
+  --danger-strong: #ff5555;
+  --danger-text: #f0a0a0;
+  --warning-bg: #3a3520;
+  --warning-text: #f0d060;
+  --no-waste: #4ade80;
+
+  --state-running-bg: #1a3a2a;
+  --state-running-text: #4ade80;
+  --state-stopped-bg: #3a1a1a;
+  --state-stopped-text: #f0a0a0;
+  --state-other-bg: #3a3520;
+  --state-other-text: #f0d060;
+
+  --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+[data-theme="cyberpunk"] {
+  --bg-primary: #0a0a1a;
+  --bg-secondary: #12122a;
+  --bg-card: #141430;
+  --bg-input: #1a1a3a;
+  --bg-selected: #1a2a4a;
+  --bg-bar: #1a1a3a;
+  --bg-bar-fill: #00ffd5;
+  --bg-savings: #0a2a2a;
+  --bg-waste: #2a0a1a;
+  --bg-waste-badge: #3a0a2a;
+  --bg-cleanup-panel: #06060f;
+  --bg-cleanup-input: #1a1a3a;
+  --bg-disabled: #333;
+
+  --text-primary: #e0e0ff;
+  --text-secondary: #b0b0d0;
+  --text-muted: #7070a0;
+  --text-faint: #505080;
+  --text-on-accent: #0a0a1a;
+  --text-on-cleanup: #e0e0ff;
+  --text-link: #00ffd5;
+  --text-waste: #ff6090;
+
+  --border: #2a2a50;
+  --border-light: #1e1e40;
+  --border-row: #1a1a3a;
+  --border-header: #2a2a50;
+
+  --accent: #00ffd5;
+  --accent-hover: #00ddbb;
+  --success: #00ff88;
+  --success-text: #00ff88;
+  --success-light: #00ff88;
+  --success-dark: #00cc66;
+  --danger: #ff2060;
+  --danger-strong: #ff4080;
+  --danger-text: #ff6090;
+  --warning-bg: #2a2a00;
+  --warning-text: #ffff00;
+  --no-waste: #00ff88;
+
+  --state-running-bg: #0a2a2a;
+  --state-running-text: #00ff88;
+  --state-stopped-bg: #2a0a1a;
+  --state-stopped-text: #ff6090;
+  --state-other-bg: #2a2a00;
+  --state-other-text: #ffff00;
+
+  --font-family: "JetBrains Mono", "Fira Code", "Cascadia Code", monospace;
+}
+
+/* Base styles */
+body {
+  margin: 0;
+  font-family: var(--font-family);
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
