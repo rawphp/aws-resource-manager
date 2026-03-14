@@ -104,11 +104,6 @@ export function App() {
           >
             {scanning ? 'Scanning...' : 'Scan'}
           </button>
-          {scanError && (
-            <span style={{ color: 'var(--danger)', fontSize: '0.8rem', maxWidth: '200px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-              {scanError}
-            </span>
-          )}
           {/* Report selector dropdown */}
           {availableReports.length > 0 && (
             <select
@@ -154,6 +149,20 @@ export function App() {
           <ThemeSelector />
         </div>
       </div>
+
+      {scanError && (
+        <div style={{
+          padding: '12px 16px',
+          marginBottom: '16px',
+          background: 'var(--bg-waste)',
+          border: '1px solid var(--danger)',
+          borderRadius: '6px',
+          color: 'var(--danger)',
+          fontSize: '0.9rem',
+        }}>
+          {scanError}
+        </div>
+      )}
 
       {view !== 'accounts' && <SummaryCards summary={report.summary} />}
 
