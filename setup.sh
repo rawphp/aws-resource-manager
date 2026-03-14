@@ -4,7 +4,7 @@ set -e
 REPO="https://github.com/rawphp/aws-resource-manager.git"
 DIR="aws-resource-manager"
 
-if [ -d "$DIR/.git" ]; then
+if [ -d "$DIR" ]; then
   echo "==> Updating existing installation..."
   cd "$DIR"
   git pull
