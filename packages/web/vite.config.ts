@@ -147,6 +147,118 @@ function deleteApiPlugin(): Plugin {
   };
 }
 
+let scanning = false;
+
+function scanApiPlugin(): Plugin {
+  const configPath = resolve(__dirname, '../../accounts.yaml');
+  const reportsDir = resolve(__dirname, '../../reports');
+
+  return {
+    name: 'scan-api',
+    configureServer(server) {
+      server.middlewares.use(async (req: IncomingMessage, res: ServerResponse, next: () => void) => {
+        // GET /api/scan/status
+        if (req.url === '/api/scan/status' && req.method === 'GET') {
+          res.setHeader('Content-Type', 'application/json');
+          res.end(JSON.stringify({ scanning }));
+          return;
+        }
+
+        // POST /api/scan
+        if (req.url === '/api/scan' && req.method === 'POST') {
+          res.setHeader('Content-Type', 'application/json');
+
+          if (scanning) {
+            res.statusCode = 409;
+            res.end(JSON.stringify({ error: 'A scan is already in progress' }));
+            return;
+          }
+
+          if (!existsSync(configPath)) {
+            res.statusCode = 404;
+            res.end(JSON.stringify({ error: 'accounts.yaml not found. Add accounts first.' }));
+            return;
+          }
+
+          scanning = true;
+
+          try {
+            const { parseConfigFile, resolveCredentials } = await import(
+              '../../packages/scanner/src/credentials.js'
+            );
+            const { scanAccount } = await import(
+              '../../packages/scanner/src/engine.js'
+            );
+            const { allScanners } = await import(
+              '../../packages/scanner/src/scanners/index.js'
+            );
+            const { getCostByService, getCostByRegion, mergeCostsToResources } = await import(
+              '../../packages/scanner/src/cost.js'
+            );
+            const { generateReport, saveReport, getAllResources } = await import(
+              '../../packages/scanner/src/report.js'
+            );
+
+            const config = parseConfigFile(configPath);
+
+            if (!config.accounts || config.accounts.length === 0) {
+              scanning = false;
+              res.statusCode = 400;
+              res.end(JSON.stringify({ error: 'No accounts configured in accounts.yaml' }));
+              return;
+            }
+
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            const accountResults: any[] = [];
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            const allCostsByService: Record<string, any[]> = {};
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            let allCostsByRegion: any[] = [];
+
+            for (const account of config.accounts) {
+              const result = await scanAccount(account, allScanners, {
+                concurrency: 5,
+              });
+              accountResults.push(result);
+
+              // Fetch cost data
+              try {
+                const credentials = await resolveCredentials(account);
+                const serviceCosts = await getCostByService(credentials);
+                const regionCosts = await getCostByRegion(credentials);
+
+                allCostsByService[account.name] = serviceCosts;
+                allCostsByRegion = [...allCostsByRegion, ...regionCosts];
+
+                const resources = getAllResources([result]);
+                mergeCostsToResources(resources, serviceCosts);
+              } catch {
+                // Cost Explorer may not be available — continue without costs
+              }
+            }
+
+            const report = generateReport(accountResults, allCostsByService, allCostsByRegion);
+            const timestamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19);
+            const filename = `report-${timestamp}.json`;
+            const outputPath = join(reportsDir, filename);
+            saveReport(report, outputPath);
+
+            scanning = false;
+            res.end(JSON.stringify({ success: true, filename }));
+          } catch (err: unknown) {
+            scanning = false;
+            res.statusCode = 500;
+            res.end(JSON.stringify({ error: (err as Error).message }));
+          }
+          return;
+        }
+
+        next();
+      });
+    },
+  };
+}
+
 export default defineConfig({
-  plugins: [react(), reportsApiPlugin(), deleteApiPlugin()],
+  plugins: [react(), reportsApiPlugin(), deleteApiPlugin(), scanApiPlugin()],
 });
