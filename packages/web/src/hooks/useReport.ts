@@ -149,6 +149,18 @@ export function useReport() {
     }));
   };
 
+  const refreshReports = useCallback(() => {
+    fetch('/api/reports')
+      .then((res) => res.json())
+      .then((files: string[]) => {
+        setAvailableReports(files);
+        if (files.length > 0) {
+          selectReport(files[0]);
+        }
+      })
+      .catch(() => { /* silently fail */ });
+  }, [selectReport]);
+
   return {
     report,
     loading,
@@ -156,6 +168,7 @@ export function useReport() {
     availableReports,
     currentReportName,
     selectReport,
+    refreshReports,
     filters,
     setFilters,
     sort,

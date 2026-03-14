@@ -5,6 +5,7 @@ import { ResourceTable } from './components/ResourceTable';
 import { CostBreakdown } from './components/CostBreakdown';
 import { CleanupPanel } from './components/CleanupPanel';
 import { useReport } from './hooks/useReport';
+import { useScan } from './hooks/useScan';
 
 type View = 'resources' | 'costs';
 
@@ -18,6 +19,7 @@ export function App() {
     availableReports,
     currentReportName,
     selectReport,
+    refreshReports,
     filters,
     setFilters,
     sort,
@@ -28,6 +30,8 @@ export function App() {
     regions,
     accounts,
   } = useReport();
+
+  const { scanning, error: scanError, startScan } = useScan(refreshReports);
 
   const selectedResources = useMemo(
     () => allResources.filter((r) => selectedIds.has(r.id)),
@@ -63,7 +67,7 @@ export function App() {
   }
 
   if (!report) {
-    return <FileUpload onFileLoad={loadReport} />;
+    return <FileUpload onFileLoad={loadReport} onScan={startScan} scanning={scanning} scanError={scanError} />;
   }
 
   return (
@@ -73,6 +77,28 @@ export function App() {
           AWS Resource Manager
         </h1>
         <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+          <button
+            onClick={startScan}
+            disabled={scanning}
+            style={{
+              padding: '8px 16px',
+              background: scanning ? '#ccc' : '#28a745',
+              color: 'white',
+              border: 'none',
+              borderRadius: '6px',
+              cursor: scanning ? 'not-allowed' : 'pointer',
+              fontSize: '0.85rem',
+              fontWeight: 600,
+              opacity: scanning ? 0.7 : 1,
+            }}
+          >
+            {scanning ? 'Scanning...' : 'Scan'}
+          </button>
+          {scanError && (
+            <span style={{ color: '#dc3545', fontSize: '0.8rem', maxWidth: '200px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+              {scanError}
+            </span>
+          )}
           {/* Report selector dropdown */}
           {availableReports.length > 0 && (
             <select
