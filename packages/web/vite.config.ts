@@ -276,24 +276,21 @@ function maskSecret(value: string | undefined): string | undefined {
 function accountsApiPlugin(): Plugin {
   const configPath = resolve(__dirname, '../../accounts.yaml');
 
-  function readAccounts(): AccountEntry[] {
+  async function readAccounts(): Promise<AccountEntry[]> {
     if (!existsSync(configPath)) return [];
-    const content = readFileSync(configPath, 'utf-8');
-    // Dynamic import won't work at top level for yaml, so we use a sync require-style approach
-    // The yaml package is available via the scanner workspace
     try {
-      // eslint-disable-next-line @typescript-eslint/no-require-imports
-      const yaml = require('yaml');
-      const parsed = yaml.parse(content);
-      return parsed?.accounts || [];
+      const { parseConfigFile } = await import(
+        '../../packages/scanner/src/credentials.js'
+      );
+      const config = parseConfigFile(configPath);
+      return config.accounts || [];
     } catch {
       return [];
     }
   }
 
-  function writeAccounts(accounts: AccountEntry[]): void {
-    // eslint-disable-next-line @typescript-eslint/no-require-imports
-    const yaml = require('yaml');
+  async function writeAccounts(accounts: AccountEntry[]): Promise<void> {
+    const yaml = await import('yaml');
     writeFileSync(configPath, yaml.stringify({ accounts }), 'utf-8');
   }
 
@@ -304,7 +301,7 @@ function accountsApiPlugin(): Plugin {
         // GET /api/accounts
         if (req.url === '/api/accounts' && req.method === 'GET') {
           res.setHeader('Content-Type', 'application/json');
-          const accounts = readAccounts().map((a) => ({
+          const accounts = (await readAccounts()).map((a) => ({
             ...a,
             secretAccessKey: maskSecret(a.secretAccessKey) || '',
             sessionToken: maskSecret(a.sessionToken),
@@ -326,7 +323,7 @@ function accountsApiPlugin(): Plugin {
               return;
             }
 
-            const accounts = readAccounts();
+            const accounts = await readAccounts();
             if (accounts.some((a) => a.name === account.name)) {
               res.statusCode = 409;
               res.end(JSON.stringify({ error: `Account "${account.name}" already exists` }));
@@ -344,7 +341,7 @@ function accountsApiPlugin(): Plugin {
             if (account.sessionToken) entry.sessionToken = account.sessionToken;
 
             accounts.push(entry);
-            writeAccounts(accounts);
+            await writeAccounts(accounts);
             res.statusCode = 201;
             res.end(JSON.stringify({ success: true }));
           } catch {
@@ -363,7 +360,7 @@ function accountsApiPlugin(): Plugin {
             const body = await readBody(req);
             const updates: Partial<AccountEntry> = JSON.parse(body);
 
-            const accounts = readAccounts();
+            const accounts = await readAccounts();
             const index = accounts.findIndex((a) => a.name === accountName);
 
             if (index === -1) {
@@ -384,7 +381,7 @@ function accountsApiPlugin(): Plugin {
               accounts[index].sessionToken = updates.sessionToken;
             }
 
-            writeAccounts(accounts);
+            await writeAccounts(accounts);
             res.end(JSON.stringify({ success: true }));
           } catch {
             res.statusCode = 400;
@@ -398,7 +395,7 @@ function accountsApiPlugin(): Plugin {
           res.setHeader('Content-Type', 'application/json');
           const accountName = decodeURIComponent(req.url.replace('/api/accounts/', ''));
 
-          const accounts = readAccounts();
+          const accounts = await readAccounts();
           const index = accounts.findIndex((a) => a.name === accountName);
 
           if (index === -1) {
@@ -408,7 +405,7 @@ function accountsApiPlugin(): Plugin {
           }
 
           accounts.splice(index, 1);
-          writeAccounts(accounts);
+          await writeAccounts(accounts);
           res.end(JSON.stringify({ success: true }));
           return;
         }
