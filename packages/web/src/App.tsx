@@ -123,6 +123,7 @@ export function App() {
                 border: '1px solid var(--border)',
                 fontSize: '0.85rem',
                 background: 'var(--bg-primary)',
+                color: 'var(--text-primary)',
                 maxWidth: '300px',
               }}
             >
