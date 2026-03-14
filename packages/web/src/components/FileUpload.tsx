@@ -1,3 +1,5 @@
+import { ThemeSelector } from './ThemeSelector';
+
 interface FileUploadProps {
   onFileLoad: (file: File) => void;
   onScan?: () => void;
@@ -14,7 +16,11 @@ export function FileUpload({ onFileLoad, onScan, scanning, scanError }: FileUplo
       justifyContent: 'center',
       minHeight: '60vh',
       gap: '20px',
+      position: 'relative',
     }}>
+      <div style={{ position: 'absolute', top: '20px', right: '20px' }}>
+        <ThemeSelector />
+      </div>
       <h1 style={{ fontSize: '2rem', color: 'var(--text-primary)' }}>AWS Resource Manager</h1>
       <p style={{ color: 'var(--text-muted)', maxWidth: '500px', textAlign: 'center' }}>
         Scan your AWS accounts or upload an existing report to visualize resources and costs.

@@ -5,6 +5,7 @@ import { ResourceTable } from './components/ResourceTable';
 import { CostBreakdown } from './components/CostBreakdown';
 import { CleanupPanel } from './components/CleanupPanel';
 import { AccountsManager } from './components/AccountsManager';
+import { ThemeSelector } from './components/ThemeSelector';
 import { useReport } from './hooks/useReport';
 import { useScan } from './hooks/useScan';
 import { useAccounts } from './hooks/useAccounts';
@@ -149,6 +150,7 @@ export function App() {
               {v.charAt(0).toUpperCase() + v.slice(1)}
             </button>
           ))}
+          <ThemeSelector />
         </div>
       </div>
 
