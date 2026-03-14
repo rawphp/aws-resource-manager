@@ -5,13 +5,14 @@
 
 Scan all your AWS resources across every region and service, see what you're being charged for, and clean up what you don't need.
 
-Works with multiple AWS accounts. Generates a JSON report that powers both a CLI summary and a web dashboard.
+Works with multiple AWS accounts. Everything is managed from the web dashboard — add accounts, run scans, view reports, and delete unused resources.
 
 ## What It Does
 
-1. **Scan** - Discovers resources across 14 AWS services and all enabled regions
-2. **Visualize** - Web dashboard with filterable resource table, cost charts, and waste detection
-3. **Clean up** - Select resources for deletion with a confirmation workflow
+1. **Configure** - Add your AWS accounts from the dashboard
+2. **Scan** - Discovers resources across 14 AWS services and all enabled regions
+3. **Visualize** - Filterable resource table, cost charts, and waste detection
+4. **Clean up** - Select resources for deletion with a confirmation workflow
 
 ### Supported Services
 
@@ -30,55 +31,49 @@ npm run build
 
 Requires **Node.js 18+**.
 
-### 2. Configure Accounts
-
-```bash
-cp accounts.example.yaml accounts.yaml
-```
-
-Edit `accounts.yaml` with your AWS credentials:
-
-```yaml
-accounts:
-  - name: production
-    accessKeyId: AKIAIOSFODNN7EXAMPLE
-    secretAccessKey: wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
-    defaultRegion: us-east-1
-
-  - name: staging
-    accessKeyId: AKIAIOSFODNN8EXAMPLE
-    secretAccessKey: wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
-    roleArn: arn:aws:iam::123456789012:role/ReadOnlyAccess
-```
-
-**Never commit `accounts.yaml` to version control.** It's already in `.gitignore`. See [SECURITY.md](SECURITY.md) for credential best practices.
-
-### 3. Run a Scan
-
-```bash
-# Using compiled output (after npm run build):
-npm run start --workspace=packages/scanner -- scan --config accounts.yaml
-
-# Or for development (no build step needed):
-npm run dev --workspace=packages/scanner -- scan --config accounts.yaml
-```
-
-This will:
-- Discover all enabled regions for each account
-- Scan all 14 services across every region
-- Fetch cost data from AWS Cost Explorer (last 30 days)
-- Generate a JSON report in `./reports/`
-- Print a summary table to the console
-
-### 4. View the Dashboard
+### 2. Launch the Dashboard
 
 ```bash
 npm run dev --workspace=packages/web
 ```
 
-Open `http://localhost:5173` and upload your report JSON file.
+Open `http://localhost:5173`.
+
+### 3. Add an AWS Account
+
+Click the **Accounts** tab, then **Add Account**. Fill in:
+
+- **Name** — A label for this account (e.g., `production`)
+- **Access Key ID** — Your AWS access key
+- **Secret Access Key** — Your AWS secret key
+- **Default Region** *(optional)* — Region for global service discovery (defaults to `us-east-1`)
+- **Role ARN** *(optional)* — If you want to assume a cross-account role
+- **Session Token** *(optional)* — For temporary credentials
+
+You can add multiple accounts. Credentials are saved to `accounts.yaml` (gitignored — never committed).
+
+### 4. Run a Scan
+
+Click the **Scan** button in the header. The scanner will:
+
+- Discover all enabled regions for each account
+- Scan all 14 services across every region
+- Fetch cost data from AWS Cost Explorer (last 30 days)
+- Generate a report and load it automatically
+
+The button is disabled while a scan is running. When complete, the dashboard refreshes with the new report.
+
+### 5. Review and Clean Up
+
+Switch between the **Resources** and **Costs** tabs to explore your AWS footprint:
+
+- **Resources** — Filter by service, region, account, or search by name/ID. Select resources with checkboxes to add them to the cleanup queue.
+- **Costs** — Bar charts showing cost breakdown by service and region, top 10 most expensive resources, and waste detection (stopped instances, unattached EBS volumes, unused Elastic IPs).
+- **Cleanup** — Select resources from the table, review the dry-run summary, type `DELETE` to confirm. Shows estimated monthly savings.
 
 ## CLI Reference
+
+The scanner can also be used standalone from the command line:
 
 ```
 aws-resource-manager scan [options]    Run a full scan
@@ -101,16 +96,6 @@ aws-resource-manager report [options]  View an existing report
 | Flag | Description |
 |------|-------------|
 | `--input <path>` | Path to existing report JSON |
-
-## Web Dashboard
-
-The dashboard has two views:
-
-**Resources** - Filterable, sortable table of all discovered resources. Filter by service, region, account, or search by name/ID. Select resources with checkboxes to add them to the cleanup queue.
-
-**Costs** - Bar charts showing cost breakdown by service and region, top 10 most expensive resources, and waste detection (stopped instances, unattached EBS volumes, unused Elastic IPs).
-
-**Cleanup** - Select resources from the table, review the dry-run summary, type `DELETE` to confirm. Shows estimated monthly savings.
 
 ## IAM Permissions
 
